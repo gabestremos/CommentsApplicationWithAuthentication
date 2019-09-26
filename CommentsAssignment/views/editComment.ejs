@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+   
+  <head>
+    <meta charset="utf-8" />
+    <title>Edit Comment</title>
+    
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+    
+  </head>
+ 
+  <body class="container">
+    <div class="ui container">
+        <div class="ui tiny menu">
+            <a class=" mini item" href="/listThreads">
+              <img class="ui tiny image left aligned" src="/images/WC.jpg"
+            /></a>
+            <h3 class="item header">
+               <%=username%>
+              </h3>
+            <div class="right menu">
+                <div class="item">
+                    <a class="ui primary" title="Change password"  href="/changePassword"><i class="cog icon large"></i></a>
+                </div>
+              <div class="item">
+                <a class="ui primary" href="/logout"
+                  ><i class="sign-out icon large"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+      <div class="content">
+        <div class="ui form">
+                <% if(thread){ %> 
+          <form action="/<%=thread._id%>/editComment/<%=commentId%>" method="POST">
+            <div class="ui form container ">
+              <div class="field ">
+                <label>Comment</label>
+                <textarea type="text" rows="3" name="comment" placeholder="Write a comment..." required/><%=comment%></textarea>
+              </div>
+            </div>
+            </div>
+            <button class="ui button positive right aligned" type="submit"/>
+              <i class="save icon"></i>Save
+        </button>
+            <a class="ui button secondary left aligned" href="/view/<%=thread._id%>"
+              ><i class="close icon"></i>Cancel</a
+            ><%}%>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+

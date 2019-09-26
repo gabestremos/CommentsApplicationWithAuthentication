@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>View Thread</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+  </head>
+  <body class="container">
+    <div class="ui container">
+        <div class="ui tiny menu">
+            <a class=" mini item" href="/listThreads">
+              <img class="ui tiny image left aligned" src="/images/WC.jpg"></a>
+              <h3 class="item header">
+                  <%=username%>
+                </h3>
+            <div class="right menu">
+                <div class="item">
+                    <a class="ui primary" title="Change password" href="/changePassword"><i class="cog icon large"></i></a>
+                </div>
+              <div class="item">
+                  <a class="ui primary" title="Logout" href="/logout"><i class="sign-out icon large"></i></a>
+              </div>
+            </div>
+          </div>
+      <% if(threads.length){ %> <%threads.forEach((thread)=>{%>
+        <% if(thread.author===username){%>
+          
+          <a
+            class="ui button mini primary left aligned"
+            href="/edit/<%=thread._id%>"
+          >
+            <i class="edit icon"></i>Edit</a
+          >
+          <a
+            class="ui button negative mini left aligned"
+            href="/deleteThread/<%=thread._id%>"
+            onclick="return confirm('Are you sure you want to delete?')"
+          >
+            <i class="trash icon"></i>Delete Thread</a
+          >
+        <%}%>
+      <a class="ui button google mini plus left aligned" href="/listThreads">
+        <i class="list icon"></i>View Threads</a
+      >
+      <div class="content ui segment">
+        <div class="ui one column doubling stackable  container">
+          <div class="ui items">
+            <div class="ui item">
+              <div class="ui avatar tiny circular image">
+                  <img src="/images/boy.png" />
+              </div>
+              <div class="content">
+                  <div class="middle aligned content">
+                  <h1 class="header">
+                   <%=thread.author%>
+                  </h1>
+                </div>
+                <div class="description">
+                    <%=thread.title%>
+                  </div>
+              </div>
+            </div>
+                <%if(thread.imgDir){%>
+                  <div class="ui stackable container">
+                    <img class="ui medium centered image" src="/images/<%=thread.imgDir%>">
+                  </div>
+                <%}%>
+                
+              <div class="ui fitted divider "></div>
+          </div>
+        </div>
+        <div class="ui one column grid container">
+          <div class="column ui   container">
+            <div class="ui comments" >
+              <%thread.comments.forEach((comment)=>{%>
+                  <div class="comment">
+                      <div class="avatar mini ">
+                          <img src="/images/boy.png" />
+                        </div> 
+                      <div class="content">
+                        <a class="author"><%=comment.author%></a>
+                        <div class="text">
+                            <%=comment.comment%>
+                        </div>
+                        <%if(comment.author===username){%>
+                          <div class="actions">
+                              <a
+                              class="ui mini right aligned"
+                              href="/<%=thread._id%>/editComment/<%=comment._id%>"
+                            >
+                              <i class="edit icon"></i
+                            ></a>
+                              <a
+                              class="ui mini right aligned"
+                              href="/<%=thread._id%>/deleteComment/<%=comment._id%>"
+                              onclick="return confirm('Are you sure you want to delete?')"
+                            >
+                              <i class="x icon"></i
+                            ></a> 
+                          </div>
+                          <%}%>
+                      </div>
+                    </div>
+                    <%})%>
+              </div>
+          </div>
+        </div>
+        <br>
+        <div class="ui  container">
+          <div class="ui form container">
+
+            <form action="/comment/<%=thread._id%>" method="POST">
+  
+              <div class="field">
+                <textarea
+                  rows="2"
+                  name="comment"
+                  placeholder="Write a comment..."
+                ></textarea>
+              </div>
+              <button class="ui button primary mini left aligned " type="submit"
+                >Post
+            </form>
+          </div>
+          <%})%> <%}%>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.js"
+      integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"></script>
+  </body>
+</html>
