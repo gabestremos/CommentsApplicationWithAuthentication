@@ -32,29 +32,35 @@ userRouter
   .route("/signup")
   .get(
     (req, res, next) => {
-      res.render("signup");
+      res.render("signup", { err: "" });
     },
     err => {
       next(err);
     }
   )
   .post((req, res, next) => {
-    User.register(
-      new User({ username: req.body.username }),
-      req.body.password,
-      (err, user) => {
-        if (err) {
-          res.status = 500;
-          err = new Error("There was an error creating your account");
-          return next(err);
-        } else {
-          passport.authenticate("local")(req, res, () => {
-            res.status = 200;
-            return res.redirect("/login");
-          });
-        }
+    User.find({ username: req.body.username }).then(user => {
+      if (user == "") {
+        User.register(
+          new User({ username: req.body.username }),
+          req.body.password,
+          (err, user) => {
+            if (err) {
+              res.status = 500;
+              err = new Error("There was an error creating your account");
+              return next(err);
+            } else {
+              passport.authenticate("local")(req, res, () => {
+                res.status = 200;
+                return res.redirect("/login");
+              });
+            }
+          }
+        );
+      } else {
+        return res.render("signup", { err: "Username is already taken" });
       }
-    );
+    });
   });
 userRouter
   .route("/changePassword")

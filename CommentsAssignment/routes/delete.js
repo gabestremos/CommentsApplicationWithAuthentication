@@ -28,10 +28,12 @@ deleteRouter
         thread.comments.id(req.params.commentId).remove();
         thread.save().then(
           () => {
-            Threads.findById(req.params.threadId).then(thread => {
-              res.status = 200;
-              return res.redirect("/view/" + req.params.threadId);
-            });
+            Threads.findById(req.params.threadId)
+              .populate("user")
+              .then(thread => {
+                res.status = 200;
+                return res.redirect("/view/" + req.params.threadId);
+              });
           },
           err => next(err)
         );

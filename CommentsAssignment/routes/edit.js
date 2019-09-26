@@ -34,7 +34,6 @@ editRoute
   .route("/:threadId/editComment/:commentId")
   .get(authenticate.verifyUser, (req, res, next) => {
     Threads.findById(req.params.threadId).then(thread => {
-      // console.log(thread);
       if (thread != "" && thread.comments.id(req.params.commentId) != "") {
         return res.render("editComment", {
           thread,
@@ -61,9 +60,12 @@ editRoute
                 req.body.comment;
             }
             console.log("saved!");
-            thread.save().then(() => {
-              return res.redirect("/view/" + req.params.threadId);
-            });
+            thread
+              .save()
+              .populate("user")
+              .then(() => {
+                return res.redirect("/view/" + req.params.threadId);
+              });
           } else {
             err = new Error("Invalid Object Id!");
             err.status(404);

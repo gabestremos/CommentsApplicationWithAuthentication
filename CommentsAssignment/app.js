@@ -35,7 +35,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use("/", userRouter);
 app.use("/", threadRouter);
 app.use("/", createRouter);
@@ -53,7 +52,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  res.status = 500;
   res.render("error.jade");
 });
 
