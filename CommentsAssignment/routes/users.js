@@ -8,16 +8,17 @@ const authenticate = require("../authenticate");
 userRouter
   .route("/login")
   .get((req, res, next) => {
-    res.render("login");
+    res.render("login", { err: "" });
   })
   .post((req, res, next) => {
     passport.authenticate("local", (err, user) => {
       if (err) {
-        return next(err);
+        console.log("error");
+        return res.render("login", { err: "Incorrect username or password!" });
       }
       if (!user) {
-        err = new Error("Incorrect username or password!");
-        return res.redirect("/login");
+        return res.render("login", { err: "Incorrect username or password!" });
+        // return res.redirect("/login");
       }
       if (user) {
         const token = authenticate.getToken({ _id: user._id });
@@ -58,7 +59,7 @@ userRouter
 userRouter
   .route("/changePassword")
   .get(authenticate.verifyUser, (req, res, next) => {
-    return res.render("changePassword", { user: req.user });
+    res.render("changePassword", { user: req.user, err: "" });
   });
 userRouter.route("/changePassword/:userId").post((req, res, next) => {
   User.findById(req.params.userId).then(user => {
@@ -69,6 +70,10 @@ userRouter.route("/changePassword/:userId").post((req, res, next) => {
         if (err) {
           err = new Error("Incorrect password!");
           return next(err);
+          // return res.render("changepassword", {
+          //   user,
+          //   err: "Incorrect password!"
+          // });
         } else {
           console.log("Password changed successfully!");
           res.clearCookie("token");

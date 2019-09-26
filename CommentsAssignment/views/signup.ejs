@@ -92,7 +92,11 @@
             password: {
               identifier: "password",
               rules: [
-                {
+                    {
+                        type:'match[confpassword]',
+                        prompt:"Passwords do not match!"
+                    },
+                    {
                   type: "empty",
                   prompt: "Please enter your password"
                 }
