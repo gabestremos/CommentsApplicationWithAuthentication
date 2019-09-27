@@ -45,7 +45,6 @@ createRouter
         req.body.imgDir = req.file.originalname;
       }
       Threads.create(req.body)
-        .populate("user")
         .then(
           () => {
             res.status = 200;
@@ -72,12 +71,10 @@ createRouter
             thread.comments.push(req.body);
             thread.save().then(
               thread => {
-                Threads.findById(thread._id)
-                  .populate("user")
-                  .then(thread => {
-                    res.statusCode = 200;
-                    return res.redirect("/view/" + thread._id);
-                  });
+                Threads.findById(thread._id).then(thread => {
+                  res.statusCode = 200;
+                  return res.redirect("/view/" + thread._id);
+                });
               },
               err => next(err)
             );

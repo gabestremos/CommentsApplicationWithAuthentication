@@ -60,12 +60,9 @@ editRoute
                 req.body.comment;
             }
             console.log("saved!");
-            thread
-              .save()
-              .populate("user")
-              .then(() => {
-                return res.redirect("/view/" + req.params.threadId);
-              });
+            thread.save().then(() => {
+              return res.redirect("/view/" + req.params.threadId);
+            });
           } else {
             err = new Error("Invalid Object Id!");
             err.status(404);

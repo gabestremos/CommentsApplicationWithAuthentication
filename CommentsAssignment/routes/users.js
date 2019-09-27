@@ -13,6 +13,7 @@ userRouter
   .post((req, res, next) => {
     passport.authenticate("local", (err, user) => {
       if (err) {
+        console.log(err);
         console.log("error");
         return res.render("login", { err: "Incorrect username or password!" });
       }
@@ -22,7 +23,11 @@ userRouter
       }
       if (user) {
         const token = authenticate.getToken({ _id: user._id });
-        res.cookie("token", token);
+        res.cookie("token", token, {
+          httpOnly: true,
+          expires: true,
+          maxAge: 36000000
+        });
         res.status = 200;
         return res.redirect("/listThreads");
       }
